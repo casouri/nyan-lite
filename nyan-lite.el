@@ -75,11 +75,13 @@
 
 (defvar nyan-lite-timeline nil)
 
-(defvar nyan-lite-rainbow-image (concat default-directory "img/rainbow.xpm")
+(defvar nyan-lite-dir (file-name-directory (or load-file-name buffer-file-name)))
+
+(defvar nyan-lite-rainbow-image (concat nyan-lite-dir "img/rainbow.xpm")
   "Path to nyan rainbow images")
 
 (defvar nyan-lite-nyan-file-list (mapcar (lambda (num)
-                                           (format "%simg/nyan-frame-%d.xpm" default-directory num))
+                                           (format "%simg/nyan-frame-%d.xpm" nyan-lite-dir num))
                                          '(1 2 4 6))
   "File names of each frame of nyan cat.")
 
