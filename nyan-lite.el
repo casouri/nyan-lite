@@ -106,6 +106,7 @@ Intended to use in `mode-line-fprmat': (:eval (nyan-lite-mode-line))"
 (define-minor-mode nyan-lite-mode
   "Nyan Lite mode, display a animted nyan cat in mode-line."
   :lighter "CAT"
+  :global t
   (if nyan-lite-mode
       (progn
         (when nyan-lite-add-mode-line (add-to-list 'mode-line-format '(:eval (nyan-lite-mode-line)) t))
