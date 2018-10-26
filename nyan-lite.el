@@ -25,41 +25,101 @@
 
 ;;; Commentary:
 ;;
+;; A animated nyan cat on mode-line, nothing else.
 
 ;;; Code:
 ;;
 
-
-(setq nyan-lite-timeline '("=====" "-----"))
-(setq nyan-lite-time 0)
-(setq nyan-lite-rainbow-image (concat default-directory "img/rainbow.xpm"))
-(setq nyan-lite-nyan-image (concat default-directory "img/nyan.xpm"))
+(require 'cl-lib)
 
 ;; SCRATCH
-(setq mode-line-format '(:eval (nth nyan-lite-time nyan-lite-timeline)))
+;; (setq nyan-lite-timeline '("=====" "-----"))
+;; (setq nyan-lite-time 0)
+;; (setq nyan-lite-rainbow-image (concat default-directory "img/rainbow.xpm"))
+;; (setq nyan-lite-nyan-image (concat default-directory "img/nyan.xpm"))
 
+;; (setq mode-line-format '(:eval (nth nyan-lite-time nyan-lite-timeline)))
+
+;; (defun nyan-lite-next-frame ()
+;;   "Increment `Nyan-lite-time' so mode-line will display next frame next time."
+;;   (setq nyan-lite-time (if (>= nyan-lite-time 1) 0 (1+ nyan-lite-time))))
+
+;; (nyan-lite-next-frame)
+;; (force-mode-line-update)
+;; END_SCRATCH
+
+;; SCRATCH
+;; (setq nyan-lite-timer (run-at-time 0 0.6 #'nyan-lite-next-frame))
+;; (cancel-timer nyan-lite-timer)
+;; (insert (propertize "1" 'display (create-image nyan-lite-rainbow-image 'xpm nil :ascent 90)))111
+;; END_SCRATCH
+
+
+;;; Variables
+
+;;;; Public
+
+(defvar nyan-lite-width 10
+  "Width of nyan cat in mode-line in unit of 8 pixels.")
+
+(defvar nyan-cat-animate-interval 0.6
+  "The update interval of animation.")
+
+(defvar nyan-lite-add-mode-line t
+  "Whether to add nyan cat to mode-line automatically.")
+
+;;;; Private
+
+(defvar nyan-lite-time 0
+  "Time in timeline.")
+
+(defvar nyan-lite-rainbow-image (concat default-directory "img/rainbow.xpm")
+  "Path to nyan rainbow images")
+
+(defvar nyan-lite-nyan-file-list (mapcar (lambda (num)
+                                           (format "%simg/nyan-frame-%d.xpm" default-directory num))
+                                         '(1 2 4 6))
+  "File names of each frame of nyan cat.")
+
+(defvar nyan-lite-timeline (nyan-lite-build-timeline))
+
+(defvar nyan-lite-timer nil
+  "Timer for nyan-lite.")
+
+(defvar nyan-lite-trail-ascent-pattern '#1=(90 . (90 . (100 . (100 . #1#))))
+  "A circular list of the pattern of trail: __--__--__.")
+
+;; SCRATCH
+;; (nth 100 nyan-lite-trail-ascent-pattern)
+;; END_SCRATCH
+
+;;; Functions
+
+;;;; Public
+
+(defun nyan-lite-mode-line ()
+  "Return the nyan lite segment for mode-line.
+Intended to use in `mode-line-fprmat': (:eval (nyan-lite-mode-line))"
+  (nth nyan-lite-time nyan-lite-timeline))
+
+
+(define-minor-mode nyan-lite-mode
+  "Nyan Lite mode, display a animted nyan cat in mode-line."
+  :lighter "CAT"
+  (if nyan-lite-mode
+      (progn
+        (when nyan-lite-add-mode-line (add-to-list 'mode-line-format '(:eval (nyan-lite-mode-line)) t))
+        (setq nyan-lite-timer (run-at-time 0 nyan-cat-animate-interval #'nyan-lite-next-frame)))
+    (cancel-timer nyan-lite-timer)
+    (when nyan-lite-add-mode-line
+      (setq mode-line-format (remove '(:eval (nyan-lite-mode-line)) mode-line-format)))))
+
+;;;; Private
 
 (defun nyan-lite-next-frame ()
   "Increment `Nyan-lite-time' so mode-line will display next frame next time."
-  (setq nyan-lite-time (if (>= nyan-lite-time 1) 0 (1+ nyan-lite-time))))
+  (setq nyan-lite-time (if (>= nyan-lite-time 3) 0 (1+ nyan-lite-time))))
 
-
-(nyan-lite-next-frame)
-(force-mode-line-update)
-;; END_SCRATCH
-
-(setq nyan-lite-timer (run-at-time 0 0.6 #'nyan-lite-next-frame))
-
-;; SCRATCH
-(cancel-timer nyan-lite-timer)
-(insert (propertize "1" 'display (create-image nyan-lite-rainbow-image 'xpm nil :ascent 90)))111
-;; END_SCRATCH
-
-(setq nyan-lite-trail-ascent-pattern '#1=(90 . (90 . (100 . (100 . #1#)))))
-
-;; SCRATCH
-(nth 100 nyan-lite-trail-ascent-pattern)
-;; END_SCRATCH
 
 (defun nyan-lite-build-trail (time length)
   "There are four different possible trail pattern depends on TIME.
@@ -85,13 +145,8 @@ LEGTH is the length of the trail in units of a rainbow segment (8 pixels)."
     (cl-reduce 'concat (reverse trail))))
 
 ;; SCRATCH
-(insert (nyan-lite-build-trail 3 10))
+(insert (nyan-lite-build-trail 3 10))==========
 ;; END_SCRATCH
-
-(defvar nyan-lite-nyan-file-list (mapcar (lambda (num)
-                                           (format "%simg/nyan-frame-%d.xpm" default-directory num))
-                                         '(1 2 4 6))
-  "File names of each frame of nyan cat.")
 
 (defun nyan-lite-build-frame (time length)
   "Return Nan cat with trails of LENGTH.
@@ -108,7 +163,7 @@ TIME can be 0, 1, 2, 3."
                                                  :ascent (nth (1+ time) nyan-lite-trail-ascent-pattern)))))
 
 ;; SCRATCH
-(insert (nyan-lite-build-frame 0 10))
+(insert (nyan-lite-build-frame 0 10))=========>
 ;; END_SCRATCH
 
 (defun nyan-lite-build-timeline (width)
@@ -121,20 +176,9 @@ WIDTH is in terms of 8 pixel units."
    (nyan-lite-build-frame 2 width)
    (nyan-lite-build-frame 3 width)))
 
+;; SCRATCH
 (setq nyan-lite-timeline (nyan-lite-build-timeline 10))
-
-
-(defun nyan-lite-next-frame ()
-  "Increment `Nyan-lite-time' so mode-line will display next frame next time."
-  (setq nyan-lite-time (if (>= nyan-lite-time 3) 0 (1+ nyan-lite-time))))
-
-;;; Public Stuff
-
-(defun nyan-lite-mode-line ()
-  "Return the nyan lite segment for mode-line.
-Intended to use in `mode-line-fprmat': (:eval (nyan-lite-mode-line))"
-  (nth nyan-lite-time nyan-lite-timeline))
-
+;; END_SCRATCH
 
 
 
