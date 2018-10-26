@@ -68,9 +68,6 @@
 (defvar nyan-lite-add-mode-line t
   "Whether to add nyan cat to mode-line automatically.")
 
-(defvar nyan-lite-trail-ascent-pattern '#1=(90 90 100 100 . #1#)
-  "A circular list of the pattern of trail: __--__--__.")
-
 (defvar nyan-lite-progress-bar nil
   "Whether to use nyan as progress bar.")
 
@@ -90,6 +87,12 @@
                                            (format "%simg/nyan-frame-%d.xpm" nyan-lite-dir num))
                                          '(1 2 4 6))
   "File names of each frame of nyan cat.")
+
+(defvar nyan-lite-trail-ascent-pattern '#1=(90 90 100 100 . #1#)
+  "A circular list of the pattern of trail: __--__--__.
+Don't modify this variable, because the implementation of `nyan-lite-build-trail'
+depends on the pattern of down down up up (or up uo down down).
+I could make it more extensible but won't until anyone asks me to.")
 
 (defvar nyan-lite-timer nil
   "Timer for nyan-lite.")
@@ -148,6 +151,10 @@ When TIME is 3, pattern is ...__--__--
 
 LEGTH is the length of the trail in units of a rainbow segment (8 pixels)."
   (let* ((index (nth time '(1 0 3 2)))
+         ;; I could use a trivial implementation (let index = time) here and
+         ;; inverse the list in the end
+         ;; but that way you can't control how does nyan-cat stagger
+         ;; with the trail
          (end-index+1 (+ index length)) ; keep the total length
          trail)
     (while (< index end-index+1)
