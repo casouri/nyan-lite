@@ -1,0 +1,26 @@
+#+TITLE: Nyan Lite
+
+A lite version of [[https://github.com/TeMPOraL/nyan-mode][nyan-mode]].
+
+This package adds a animated nyan cat to your mode-line.
+
+[[./nyan-lite.gif]]
+
+* Install
+
+Download the package and add it's path to load-path
+
+* Usage
+
+To enable, simply =M-x nyan-lite-mode=
+
+To use with customized mode-line, set =nyan-lite-add-mode-line= to =nil=.
+Then add =(:eval (nyan-lite-mode-line))= to =mode-line-format=.
+
+* Customize
+
+- =nyan-lite-width= :: Width of nyan cat in mode-line in unit of 8 pixels.
+
+- =nyan-cat-animate-interval= :: The update interval of animation.
+
+- =nyan-lite-add-mode-line= :: Whether to add nyan cat to mode-line automatically.
