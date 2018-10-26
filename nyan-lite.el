@@ -139,15 +139,17 @@ Intended to use in `mode-line-fprmat': (:eval (nyan-lite-mode-line))"
   "There are four different possible trail pattern depends on TIME.
 TIME can be 0, 1, 2, 3.
 Let - represent high rainbow, _ represent low rainbow:
-When TIME is 0, pattern is ...__--__-- (right to left)
-When TIME is 1, pattern is ..._--__--__
-When TIME is 2, pattern is ...--__--__
-When TIME is 3, pattern is ...-__--__--
+                           ... 100 100 90 90
+                           ...  -   -   _  _
+When TIME is 0, pattern is ..._--__--_ (right to left)
+When TIME is 1, pattern is ...--__--__
+When TIME is 2, pattern is ...-__--__-
+When TIME is 3, pattern is ...__--__--
 
 LEGTH is the length of the trail in units of a rainbow segment (8 pixels)."
-  (let ((index time)
-        (end-index+1 (+ time length)) ; keep the total length
-        trail)
+  (let* ((index (nth time '(1 0 3 2)))
+         (end-index+1 (+ index length)) ; keep the total length
+         trail)
     (while (< index end-index+1)
       (push (propertize "=" 'display
                         (create-image nyan-lite-rainbow-image 'xpm nil
@@ -156,7 +158,7 @@ LEGTH is the length of the trail in units of a rainbow segment (8 pixels)."
                                       :ascent (nth index nyan-lite-trail-ascent-pattern)))
             trail)
       (incf index))
-    (cl-reduce 'concat (reverse trail))))
+    (cl-reduce 'concat trail)))
 
 ;; SCRATCH
 ;; (insert (nyan-lite-build-trail 3 10))
