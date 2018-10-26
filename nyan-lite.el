@@ -71,6 +71,9 @@
 (defvar nyan-lite-trail-ascent-pattern '#1=(90 90 100 100 . #1#)
   "A circular list of the pattern of trail: __--__--__.")
 
+(defvar nyan-lite-progress-bar nil
+  "Whether to use nyan as progress bar.")
+
 ;;;; Private
 
 (defvar nyan-lite-time 0
@@ -102,7 +105,13 @@
 (defun nyan-lite-mode-line ()
   "Return the nyan lite segment for mode-line.
 Intended to use in `mode-line-fprmat': (:eval (nyan-lite-mode-line))"
-  (nth nyan-lite-time nyan-lite-timeline))
+  (if nyan-lite-progress-bar
+      (let ((bar-width (floor (* nyan-lite-width (/ (float (point))
+                                                    (point-max))))))
+        (concat (substring (nth nyan-lite-time nyan-lite-timeline)
+                           (- nyan-lite-width bar-width))
+                (make-string (- nyan-lite-width bar-width) ?\s)))
+    (nth nyan-lite-time nyan-lite-timeline)))
 
 
 (define-minor-mode nyan-lite-mode
@@ -180,6 +189,12 @@ WIDTH is in terms of 8 pixel units."
    (nyan-lite-build-frame 2 width)
    (nyan-lite-build-frame 3 width)))
 
+;;;; Progress Bar
+
+(defun nyan-lite-build-progress-bar-timeline (width)
+  "Build progress bar nyan with WIDTH."
+  (dolist (bar-width (number-sequence 0 width))
+    (nyan-lite-build-timeline bar-width)))
 
 ;;; Load
 
