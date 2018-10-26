@@ -68,6 +68,9 @@
 (defvar nyan-lite-add-mode-line t
   "Whether to add nyan cat to mode-line automatically.")
 
+(defvar nyan-lite-trail-ascent-pattern '#1=(90 90 100 100 . #1#)
+  "A circular list of the pattern of trail: __--__--__.")
+
 ;;;; Private
 
 (defvar nyan-lite-time 0
@@ -87,9 +90,6 @@
 
 (defvar nyan-lite-timer nil
   "Timer for nyan-lite.")
-
-(defvar nyan-lite-trail-ascent-pattern '#1=(90 . (90 . (100 . (100 . #1#))))
-  "A circular list of the pattern of trail: __--__--__.")
 
 ;; SCRATCH
 ;; (nth 100 nyan-lite-trail-ascent-pattern)

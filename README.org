@@ -1,4 +1,4 @@
-#+TITLE: Nyan Lite
+#+TITLE: Nyan Bite
 
 A lite version of [[https://github.com/TeMPOraL/nyan-mode][nyan-mode]].
 
@@ -24,6 +24,18 @@ Then add =(:eval (when (bound-and-true-p nyan-lite-mode) (nyan-lite-mode-line)))
 - =nyan-cat-animate-interval= :: The update interval of animation.
 
 - =nyan-lite-add-mode-line= :: Whether to add nyan cat to mode-line automatically.
+
+** Trail pattern
+
+The trail pattern is defined by =nyan-lite-trail-ascent-pattern=:
+
+#+BEGIN_SRC emacs-lisp
+(defvar nyan-lite-trail-ascent-pattern '#1=(90 90 100 100 . #1#)
+  "A circular list of the pattern of trail: __--__--__.")
+#+END_SRC
+
+For example, ...__-__-__- (right to left) would be ='#1=(100 90 90 . #1#)=.
+=100= is the normal height, =90= is lower, =80= is much lower, etc. See more in the source.
 
 * Benchmark
 
