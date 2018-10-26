@@ -15,7 +15,7 @@ Download the package and add it's path to load-path
 To enable, simply =M-x nyan-lite-mode=
 
 To use with customized mode-line, set =nyan-lite-add-mode-line= to =nil=.
-Then add =(:eval (nyan-lite-mode-line))= to =mode-line-format=.
+Then add =(:eval (when (bound-and-true-p nyan-lite) (nyan-lite-mode-line)))= to =mode-line-format=.
 
 * Customize
 
