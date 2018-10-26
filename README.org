@@ -59,15 +59,14 @@ For example, ...__-__-__- (right to left) would be ='#1=(100 90 90 . #1#)=.
 ;; with progress bar utility
 (setq nyan-lite-progress-bar t)
 (benchmark-run 1000 (nyan-lite-mode-line))
-(0.05632 1 0.04994199999999971)
+(0.000816 0 0.0)
 
 (/ (car (benchmark-run 1000 (nyan-create)))
    (car (benchmark-run 1000 (nyan-lite-mode-line))))
-4.721103743888554
-
+652.3788461538462
 #+END_SRC
 
 The main reason for the speedup is that =nyan-lite= doesn't provide progress bar utility,
 therefore is able to cache the nyan cat.
 
-With progress bar enabled, nyan lite has a less significant 4x speed up.
+With progress bar enabled, nyan lite has a less significant speed up.

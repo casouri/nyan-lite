@@ -106,11 +106,9 @@
   "Return the nyan lite segment for mode-line.
 Intended to use in `mode-line-fprmat': (:eval (nyan-lite-mode-line))"
   (if nyan-lite-progress-bar
-      (let ((bar-width (floor (* nyan-lite-width (/ (float (point))
-                                                    (point-max))))))
-        (concat (substring (nth nyan-lite-time nyan-lite-timeline)
-                           (- nyan-lite-width bar-width))
-                (make-string (- nyan-lite-width bar-width) ?\s)))
+      (nth nyan-lite-time (nth (floor (* nyan-lite-width
+                                         (/ (float (point)) (point-max))))
+                               nyan-lite-timeline))
     (nth nyan-lite-time nyan-lite-timeline)))
 
 
@@ -193,12 +191,19 @@ WIDTH is in terms of 8 pixel units."
 
 (defun nyan-lite-build-progress-bar-timeline (width)
   "Build progress bar nyan with WIDTH."
-  (dolist (bar-width (number-sequence 0 width))
-    (nyan-lite-build-timeline bar-width)))
+  ;; mapcar returns ((<when bar width is 0> frame1 frame2 frame3 frame4)
+  ;;                 (<when bar width is 1> frame1 frame2 frame3 frame4))
+  ;;                 ...)
+  (mapcar (lambda (bar-width)
+            ;; mapcar returns a timeline (four frames) in progress `bar-width'
+            (mapcar (lambda (nyan-frame) (concat nyan-frame (make-string (- nyan-lite-width bar-width) ?\s)))
+                    (nyan-lite-build-timeline bar-width)))
+          (number-sequence 0 width)))
 
-;;; Load
-
-(setq nyan-lite-timeline (nyan-lite-build-timeline 10))
+;; SCRATCH
+;; (length (nyan-lite-build-progress-bar-timeline 10))
+;; (insert (nth 0 (nth 8 (nyan-lite-build-progress-bar-timeline 10))))
+;; END_SCRATCH
 
 
 (provide 'nyan-lite)
