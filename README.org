@@ -6,6 +6,8 @@ This package adds a animated nyan cat to your mode-line.
 
 [[./nyan-lite.gif]]
 
+* UPDATE
+- <2018-10-26 Fri> Progress bar support added
 * Install
 
 Download the package and add it's path to load-path
@@ -17,13 +19,20 @@ To enable, simply =M-x nyan-lite-mode=
 To use with customized mode-line, set =nyan-lite-add-mode-line= to =nil=.
 Then add =(:eval (when (bound-and-true-p nyan-lite-mode) (nyan-lite-mode-line)))= to =mode-line-format=.
 
+Enable progress bar by setting =nyan-lite-progress-bar= to =t=.
+
+
 * Customize
+
+Restart the minor mode to apply changes.
 
 - =nyan-lite-width= :: Width of nyan cat in mode-line in unit of 8 pixels.
 
 - =nyan-cat-animate-interval= :: The update interval of animation.
 
 - =nyan-lite-add-mode-line= :: Whether to add nyan cat to mode-line automatically.
+
+- =nyan-lite-progress-bar= :: whether to enable progress bar utility
 
 ** Trail pattern
 
