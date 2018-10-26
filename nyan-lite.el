@@ -145,7 +145,7 @@ LEGTH is the length of the trail in units of a rainbow segment (8 pixels)."
     (cl-reduce 'concat (reverse trail))))
 
 ;; SCRATCH
-(insert (nyan-lite-build-trail 3 10))==========
+(insert (nyan-lite-build-trail 3 10))
 ;; END_SCRATCH
 
 (defun nyan-lite-build-frame (time length)
@@ -163,7 +163,7 @@ TIME can be 0, 1, 2, 3."
                                                  :ascent (nth (1+ time) nyan-lite-trail-ascent-pattern)))))
 
 ;; SCRATCH
-(insert (nyan-lite-build-frame 0 10))=========>
+(insert (nyan-lite-build-frame 0 10))
 ;; END_SCRATCH
 
 (defun nyan-lite-build-timeline (width)
@@ -179,7 +179,6 @@ WIDTH is in terms of 8 pixel units."
 ;; SCRATCH
 (setq nyan-lite-timeline (nyan-lite-build-timeline 10))
 ;; END_SCRATCH
-
 
 
 (provide 'nyan-lite)
