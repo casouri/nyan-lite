@@ -67,6 +67,8 @@ For example, ...__-__-__- (right to left) would be ='#1=(100 90 90 . #1#)=.
 
 ;; with progress bar utility
 (setq nyan-lite-progress-bar t)
+(nyan-lite-mode -1)
+(nyan-lite-mode) ;; apply the change
 (benchmark-run 1000 (nyan-lite-mode-line))
 (0.000816 0 0.0)
 
