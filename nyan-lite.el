@@ -203,7 +203,7 @@ WIDTH is in terms of 8 pixel units."
             ;; mapcar returns a timeline (four frames) in progress `bar-width'
             (mapcar (lambda (nyan-frame) (concat nyan-frame (make-string (- nyan-lite-width bar-width) ?\s)))
                     (nyan-lite-build-timeline bar-width)))
-          (number-sequence 1 width)))
+          (append '(1) (number-sequence 1 width)))) ; (1 1 2 3 4 5 6 ...)
 
 ;; SCRATCH
 ;; (length (nyan-lite-build-progress-bar-timeline 10))
