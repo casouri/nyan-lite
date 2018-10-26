@@ -118,6 +118,9 @@ Intended to use in `mode-line-fprmat': (:eval (nyan-lite-mode-line))"
   :global t
   (if nyan-lite-mode
       (progn
+        (setq nyan-lite-timeline (if nyan-lite-progress-bar
+                                     (nyan-lite-build-progress-bar-timeline nyan-lite-width)
+                                   (nyan-lite-build-timeline nyan-lite-width)))
         (when nyan-lite-add-mode-line (add-to-list 'mode-line-format '(:eval (nyan-lite-mode-line)) t))
         (setq nyan-lite-timer (run-at-time 0 nyan-cat-animate-interval #'nyan-lite-next-frame)))
     (cancel-timer nyan-lite-timer)
