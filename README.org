@@ -75,7 +75,5 @@ For example, ...__-__-__- (right to left) would be ='#1=(100 90 90 . #1#)=.
 652.3788461538462
 #+END_SRC
 
-The main reason for the speedup is that =nyan-lite= doesn't provide progress bar utility,
-therefore is able to cache the nyan cat.
-
+The main reason for the speedup is that =nyan-lite= cache the nyan cat.
 With progress bar enabled, nyan lite has a less significant speed up.
