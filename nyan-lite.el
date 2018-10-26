@@ -118,7 +118,8 @@ Intended to use in `mode-line-fprmat': (:eval (nyan-lite-mode-line))"
 
 (defun nyan-lite-next-frame ()
   "Increment `Nyan-lite-time' so mode-line will display next frame next time."
-  (setq nyan-lite-time (if (>= nyan-lite-time 3) 0 (1+ nyan-lite-time))))
+  (setq nyan-lite-time (if (>= nyan-lite-time 3) 0 (1+ nyan-lite-time)))
+  (force-mode-line-update))
 
 
 (defun nyan-lite-build-trail (time length)
