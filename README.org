@@ -24,3 +24,26 @@ Then add =(:eval (when (bound-and-true-p nyan-lite-mode) (nyan-lite-mode-line)))
 - =nyan-cat-animate-interval= :: The update interval of animation.
 
 - =nyan-lite-add-mode-line= :: Whether to add nyan cat to mode-line automatically.
+
+* Benchmark
+
+#+BEGIN_SRC emacs-lisp
+(require 'nyan-mode)
+(require 'nyan-lite)
+(nyan-mode)
+(nyan-start-animation)
+(nyan-lite-mode)
+
+(benchmark-run 1000 (nyan-create))
+(0.312772 8 0.2761969999999989)
+
+(benchmark-run 1000 (nyan-lite-mode-line))
+(0.00019099999999999998 0 0.0)
+
+(/ (car (benchmark-run 1000 (nyan-create)))
+   (car (benchmark-run 1000 (nyan-lite-mode-line))))
+1918.8012048192768
+#+END_SRC
+
+The main reason for the speedup is that =nyan-lite= doesn't provide progress bar utility,
+therefore is able to cache the nyan cat.
