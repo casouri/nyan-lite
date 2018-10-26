@@ -102,7 +102,10 @@ TIME can be 0, 1, 2, 3."
   (concat (nyan-lite-build-trail time (1- length))
           (propertize ">" 'display (create-image (nth time nyan-lite-nyan-file-list) 'xpm nil
                                                  ;; make nyan go up and down with trail
-                                                 :ascent (nth time nyan-lite-trail-ascent-pattern)))))
+                                                 ;; Since xmp of nyan cat comes with a little bit of
+                                                 ;; trail already, we can make the trail and cat
+                                                 ;; stagger by 1 frame
+                                                 :ascent (nth (1+ time) nyan-lite-trail-ascent-pattern)))))
 
 ;; SCRATCH
 (insert (nyan-lite-build-frame 0 10))
