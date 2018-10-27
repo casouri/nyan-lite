@@ -1,4 +1,4 @@
-#+TITLE: Nyan Bite
+#+TITLE: Nyan Lite
 
 A lite version of [[https://github.com/TeMPOraL/nyan-mode][nyan-mode]].
 
