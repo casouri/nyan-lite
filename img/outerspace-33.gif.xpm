@@ -1,0 +1,29 @@
+/* XPM */
+static char *outerspace_33_gif[] = {
+/* columns rows colors chars-per-pixel */
+"8 15 8 1 ",
+"  c black",
+". c #0E4D8F",
+"X c #FCEE29",
+"o c white",
+"O c None",
+"+ c black",
+"@ c black",
+"# c black",
+/* pixels */
+".......X",
+"........",
+"........",
+"........",
+"........",
+"..o.....",
+"........",
+".....o..",
+"...o...o",
+"........",
+"..o.....",
+"........",
+"...o...o",
+".....o..",
+"........"
+};

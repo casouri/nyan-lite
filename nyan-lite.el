@@ -81,7 +81,7 @@
 (defvar nyan-lite-dir (file-name-directory (or load-file-name buffer-file-name)))
 
 (defvar nyan-lite-rainbow-image (concat nyan-lite-dir "img/rainbow.xpm")
-  "Path to nyan rainbow images")
+  "Path to nyan rainbow images.")
 
 (defvar nyan-lite-nyan-file-list (mapcar (lambda (num)
                                            (format "%simg/nyan-frame-%d.xpm" nyan-lite-dir num))
@@ -97,8 +97,19 @@ I could make it more extensible but won't until anyone asks me to.")
 (defvar nyan-lite-timer nil
   "Timer for nyan-lite.")
 
+(defvar nyan-lite-bg-frame-pattern '(#4=("33" "32" "31" "30" . #4#)
+                                        #3=("23" "22" "21" "20" . #3#)
+                                        #2=("13" "12" "11" "10" . #2#)
+                                        #1=("03" "02" "01" "00" . #1#))
+  "((pattern for frame1) (pattern for frame2) (pattern for frame3) (pattern for frame4)).
+Each frame pattern is a circular list.")
+
 ;; SCRATCH
 ;; (nth 100 nyan-lite-trail-ascent-pattern)
+;;
+;; (nth 100 (nth 0 nyan-lite-bg-frame-pattern))
+;;
+;; (insert (propertize " " 'display (create-image nyan-lite-space-image 'xpm)))
 ;; END_SCRATCH
 
 ;;; Functions
@@ -139,7 +150,7 @@ Intended to use in `mode-line-fprmat': (:eval (nyan-lite-mode-line))"
 
 
 (defun nyan-lite-build-trail (time length)
-  "There are four different possible trail pattern depends on TIME.
+  "There are four different possible trail pattern depends on TIME with LENGTH.
 TIME can be 0, 1, 2, 3.
 Let - represent high rainbow, _ represent low rainbow:
                            ... 100 100 90 90
@@ -201,15 +212,35 @@ WIDTH is in terms of 8 pixel units."
 
 ;;;; Progress Bar
 
+(defun nyan-lite-build-bg (time length)
+  "Build a frames of bg of LENGTH in TIME."
+  (let* ((index time)
+         (end-index+1 (+ index length)) ; keep the total length
+         bg)
+    (while (< index end-index+1)
+      (push (propertize " " 'display
+                        (create-image (format "%simg/outerspace-%s.gif.xpm" nyan-lite-dir (nth index (nth time nyan-lite-bg-frame-pattern)))
+                                      'xpm nil :ascent 100))
+            bg)
+      (incf index))
+    (cl-reduce 'concat bg)))
+
+;; SCRATCH
+(insert (nyan-lite-build-bg 2 10))
+;; END_SCRATCH
+
 (defun nyan-lite-build-progress-bar-timeline (width)
   "Build progress bar nyan with WIDTH."
   ;; mapcar returns ((<when bar width is 0> frame1 frame2 frame3 frame4)
   ;;                 (<when bar width is 1> frame1 frame2 frame3 frame4))
   ;;                 ...)
   (mapcar (lambda (bar-width)
-            ;; mapcar returns a timeline (four frames) in progress `bar-width'
-            (mapcar (lambda (nyan-frame) (concat nyan-frame (make-string (- nyan-lite-width bar-width) ?\s)))
-                    (nyan-lite-build-timeline bar-width)))
+            (let (bar-progress-line)
+              (dotimes (time 4)
+                (push (concat (nyan-lite-build-frame time bar-width)
+                              (nyan-lite-build-bg time (- nyan-lite-width bar-width)))
+                      bar-progress-line))
+              (reverse bar-progress-line)))
           (append '(1) (number-sequence 1 width)))) ; (1 1 2 3 4 5 6 ...)
 
 ;; SCRATCH
