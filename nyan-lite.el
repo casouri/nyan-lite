@@ -71,6 +71,10 @@
 (defvar nyan-lite-progress-bar nil
   "Whether to use nyan as progress bar.")
 
+(defvar nyan-lite-animate t
+  "Whether to animate nyan.
+Restart `nyan-lite-mode' after changing this variable.")
+
 ;;;; Private
 
 (defvar nyan-lite-time 0
@@ -125,8 +129,10 @@ Intended to use in `mode-line-fprmat': (:eval (nyan-lite-mode-line))"
                                      (nyan-lite-build-progress-bar-timeline nyan-lite-width)
                                    (nyan-lite-build-timeline nyan-lite-width)))
         (when nyan-lite-add-mode-line (add-to-list 'mode-line-format '(:eval (nyan-lite-mode-line)) t))
-        (setq nyan-lite-timer (run-at-time 0 nyan-cat-animate-interval #'nyan-lite-next-frame)))
-    (cancel-timer nyan-lite-timer)
+        (when nyan-lite-animate
+          (setq nyan-lite-timer (run-at-time 0 nyan-cat-animate-interval #'nyan-lite-next-frame))))
+    (when nyan-lite-timer
+      (cancel-timer nyan-lite-timer))
     (when nyan-lite-add-mode-line
       (setq mode-line-format (remove '(:eval (nyan-lite-mode-line)) mode-line-format)))))
 
