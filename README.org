@@ -19,7 +19,7 @@ Then add =(:eval (when (bound-and-true-p nyan-lite-mode) (nyan-lite-mode-line)))
 Enable progress bar by setting =nyan-lite-progress-bar= to =t=.
 * Customize
 Restart the minor mode to apply changes.
-
+- =nyan-lite-animate= :: Whether to animate nyan.
 - =nyan-lite-width= :: Width of nyan cat in mode-line in unit of 8 pixels.
 - =nyan-cat-animate-interval= :: The update interval of animation.
 - =nyan-lite-add-mode-line= :: Whether to add nyan cat to mode-line automatically.
