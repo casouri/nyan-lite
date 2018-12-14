@@ -85,7 +85,7 @@ Restart `nyan-lite-mode' after changing this variable.")
 (defvar nyan-lite-dir (file-name-directory (or load-file-name buffer-file-name)))
 
 (defvar nyan-lite-rainbow-image (concat nyan-lite-dir "img/rainbow.xpm")
-  "Path to nyan rainbow images")
+  "Path to nyan rainbow images.")
 
 (defvar nyan-lite-nyan-file-list (mapcar (lambda (num)
                                            (format "%simg/nyan-frame-%d.xpm" nyan-lite-dir num))
